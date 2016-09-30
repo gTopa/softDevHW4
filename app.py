@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 app=Flask(__name__)
 
+
 @app.route("/")
 def disp_loginpage():
     print "\n\n\n"
@@ -20,6 +21,14 @@ def disp_loginpage():
 
 @app.route("/auth", methods=['POST'])
 def disp_auth():
+    f = open('util/loginInfo.csv', 'r')
+    userPass = f.read()
+    f.close()
+    userPass=userPass.split('\n')
+    userPassDic={}
+    for stuff in userPass:
+        stuff=stuff.split(',')
+        userPassDic[stuff[0]]=userPassDic[stuff[1]]
     print "\n\n\n"
     print ":::DIAG::: this Flask obj"
     print app
@@ -30,10 +39,8 @@ def disp_auth():
     print ":::DIAG::: this request.method obj"
     print request.method
     print ":::DIAG::: this request.form obj"
-    print request.form['passwd']
-    status='fail'
-    if (request.form['username']=='hi' and request.form['passwd']=="l@5a6na!"):
-        status='success'
+    if 'login' in request.form.keys():
+        if request.form['passwd']==userPassDic[request.form['username']]
     return render_template("auth.html", status=status)
 
 if __name__ == "__main__":
