@@ -42,7 +42,9 @@ def disp_logout():
                     
 @app.route("/loggedin")
 def disp_loggedin():
-    return render_template('home.html')
+    if 'username' in session:
+        return render_template('home.html')
+    return redirect(url_for('disp_loginpage'))
 
 if __name__ == "__main__":
     app.debug = True
